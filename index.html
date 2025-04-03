@@ -85,6 +85,14 @@
             border-radius: 5px;
             box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
         }
+        .search-bar {
+            padding: 10px;
+            margin: 10px 0;
+            width: 80%;
+            font-size: 16px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+        }
     </style>
 </head>
 <body>
@@ -115,6 +123,11 @@
                 </select>
                 <button type="submit">Add to Directory</button>
             </form>
+        </section>
+
+        <!-- Search Bar for Matching -->
+        <section>
+            <input type="text" id="search-bar" class="search-bar" placeholder="Search for a service or professional..." onkeyup="filterDirectory()">
         </section>
 
         <!-- Directory Section -->
@@ -174,6 +187,32 @@
                     <p>Country: ${professional.country}</p>
                 `;
                 directoryList.appendChild(div);
+            });
+        }
+
+        // Function to filter directory based on search input
+        function filterDirectory() {
+            const searchQuery = document.getElementById('search-bar').value.toLowerCase();
+            const professionals = JSON.parse(localStorage.getItem('professionals')) || [];
+            const directoryList = document.getElementById('directory-list');
+
+            directoryList.innerHTML = ''; // Clear existing list
+
+            professionals.forEach(professional => {
+                if (
+                    professional.name.toLowerCase().includes(searchQuery) ||
+                    professional.service.toLowerCase().includes(searchQuery) ||
+                    professional.country.toLowerCase().includes(searchQuery)
+                ) {
+                    const div = document.createElement('div');
+                    div.classList.add('professional');
+                    div.innerHTML = `
+                        <h3>${professional.name}</h3>
+                        <p>Service: ${professional.service}</p>
+                        <p>Country: ${professional.country}</p>
+                    `;
+                    directoryList.appendChild(div);
+                }
             });
         }
 
