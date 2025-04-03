@@ -71,6 +71,20 @@
         .cta:hover { 
             background-color: #2980b9; 
         }
+        .directory {
+            margin-top: 20px;
+            padding: 20px;
+            background-color: #f1f1f1;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+        .professional {
+            margin: 10px 0;
+            padding: 10px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
+        }
     </style>
 </head>
 <body>
@@ -102,6 +116,69 @@
                 <button type="submit">Add to Directory</button>
             </form>
         </section>
+
+        <!-- Directory Section -->
+        <section class="directory">
+            <h2>Professional Directory</h2>
+            <div id="directory-list">
+                <!-- Dynamic professional list will appear here -->
+            </div>
+        </section>
     </div>
+
+    <script>
+        // Function to save form data to LocalStorage
+        document.getElementById('signup-form').addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent form submission
+
+            const name = document.getElementById('name').value;
+            const service = document.getElementById('service').value;
+            const country = document.getElementById('country').value;
+
+            // Create a professional object
+            const professional = {
+                name: name,
+                service: service,
+                country: country
+            };
+
+            // Get existing data from LocalStorage
+            let professionals = JSON.parse(localStorage.getItem('professionals')) || [];
+
+            // Add new professional to the array
+            professionals.push(professional);
+
+            // Save updated list back to LocalStorage
+            localStorage.setItem('professionals', JSON.stringify(professionals));
+
+            // Clear the form
+            document.getElementById('signup-form').reset();
+
+            // Reload the directory list
+            loadDirectory();
+        });
+
+        // Function to load directory from LocalStorage
+        function loadDirectory() {
+            const professionals = JSON.parse(localStorage.getItem('professionals')) || [];
+            const directoryList = document.getElementById('directory-list');
+
+            directoryList.innerHTML = ''; // Clear existing list
+
+            professionals.forEach(professional => {
+                const div = document.createElement('div');
+                div.classList.add('professional');
+                div.innerHTML = `
+                    <h3>${professional.name}</h3>
+                    <p>Service: ${professional.service}</p>
+                    <p>Country: ${professional.country}</p>
+                `;
+                directoryList.appendChild(div);
+            });
+        }
+
+        // Load directory when the page loads
+        window.onload = loadDirectory;
+    </script>
 </body>
 </html>
