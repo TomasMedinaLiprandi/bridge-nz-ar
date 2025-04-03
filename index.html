@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Connecting professionals from Argentina and New Zealand. Find the right service provider or offer your professional services.">
+    <meta name="keywords" content="Argentina, New Zealand, professionals, IT, psychologists, consultants, directory, services">
     <title>Connecting Argentina & New Zealand</title>
     <style>
         body { 
@@ -71,27 +73,57 @@
         .cta:hover { 
             background-color: #2980b9; 
         }
-        .directory {
+        .filter-container {
             margin-top: 20px;
-            padding: 20px;
-            background-color: #f1f1f1;
-            border-radius: 10px;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
         }
-        .professional {
-            margin: 10px 0;
+        .filter-container select {
             padding: 10px;
-            background-color: #fff;
-            border-radius: 5px;
-            box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
-        }
-        .search-bar {
-            padding: 10px;
-            margin: 10px 0;
-            width: 80%;
             font-size: 16px;
+            margin-right: 10px;
             border-radius: 5px;
-            border: 1px solid #ddd;
+        }
+        .profile {
+            background: #f4f4f4;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+        .review-section {
+            margin-top: 20px;
+        }
+        .review-form input, .review-form textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+        }
+        .review-form button {
+            background-color: #3498db;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .review-form button:hover {
+            background-color: #2980b9;
+        }
+        .contact-form input, .contact-form textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+        }
+        .contact-form button {
+            background-color: #3498db;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .contact-form button:hover {
+            background-color: #2980b9;
         }
     </style>
 </head>
@@ -111,6 +143,22 @@
             <img src="new-zealand-map.png" alt="Map of New Zealand">
         </div>
 
+        <!-- Filter Section -->
+        <div class="filter-container">
+            <select id="location-filter">
+                <option value="all">All Locations</option>
+                <option value="argentina">Argentina</option>
+                <option value="new-zealand">New Zealand</option>
+            </select>
+            <select id="service-filter">
+                <option value="all">All Services</option>
+                <option value="it">IT</option>
+                <option value="psychologist">Psychologist</option>
+                <option value="consultant">Consultant</option>
+                <option value="designer">Designer</option>
+            </select>
+        </div>
+
         <!-- Signup Form -->
         <section id="signup">
             <h2>Sign Up as a Professional</h2>
@@ -125,99 +173,30 @@
             </form>
         </section>
 
-        <!-- Search Bar for Matching -->
-        <section>
-            <input type="text" id="search-bar" class="search-bar" placeholder="Search for a service or professional..." onkeyup="filterDirectory()">
+        <!-- Contact Form -->
+        <section id="contact">
+            <h2>Contact a Professional</h2>
+            <form class="contact-form">
+                <input type="text" placeholder="Your Name" required>
+                <input type="email" placeholder="Your Email" required>
+                <textarea placeholder="Your Message" required></textarea>
+                <button type="submit">Send Message</button>
+            </form>
         </section>
 
-        <!-- Directory Section -->
-        <section class="directory">
-            <h2>Professional Directory</h2>
-            <div id="directory-list">
-                <!-- Dynamic professional list will appear here -->
-            </div>
+        <!-- Reviews Section -->
+        <section class="review-section">
+            <h2>Leave a Review</h2>
+            <form class="review-form">
+                <input type="text" placeholder="Your Name" required>
+                <textarea placeholder="Your Review" required></textarea>
+                <button type="submit">Submit Review</button>
+            </form>
         </section>
     </div>
 
     <script>
-        // Function to save form data to LocalStorage
-        document.getElementById('signup-form').addEventListener('submit', function(event) {
-            event.preventDefault(); // Prevent form submission
-
-            const name = document.getElementById('name').value;
-            const service = document.getElementById('service').value;
-            const country = document.getElementById('country').value;
-
-            // Create a professional object
-            const professional = {
-                name: name,
-                service: service,
-                country: country
-            };
-
-            // Get existing data from LocalStorage
-            let professionals = JSON.parse(localStorage.getItem('professionals')) || [];
-
-            // Add new professional to the array
-            professionals.push(professional);
-
-            // Save updated list back to LocalStorage
-            localStorage.setItem('professionals', JSON.stringify(professionals));
-
-            // Clear the form
-            document.getElementById('signup-form').reset();
-
-            // Reload the directory list
-            loadDirectory();
-        });
-
-        // Function to load directory from LocalStorage
-        function loadDirectory() {
-            const professionals = JSON.parse(localStorage.getItem('professionals')) || [];
-            const directoryList = document.getElementById('directory-list');
-
-            directoryList.innerHTML = ''; // Clear existing list
-
-            professionals.forEach(professional => {
-                const div = document.createElement('div');
-                div.classList.add('professional');
-                div.innerHTML = `
-                    <h3>${professional.name}</h3>
-                    <p>Service: ${professional.service}</p>
-                    <p>Country: ${professional.country}</p>
-                `;
-                directoryList.appendChild(div);
-            });
-        }
-
-        // Function to filter directory based on search input
-        function filterDirectory() {
-            const searchQuery = document.getElementById('search-bar').value.toLowerCase();
-            const professionals = JSON.parse(localStorage.getItem('professionals')) || [];
-            const directoryList = document.getElementById('directory-list');
-
-            directoryList.innerHTML = ''; // Clear existing list
-
-            professionals.forEach(professional => {
-                if (
-                    professional.name.toLowerCase().includes(searchQuery) ||
-                    professional.service.toLowerCase().includes(searchQuery) ||
-                    professional.country.toLowerCase().includes(searchQuery)
-                ) {
-                    const div = document.createElement('div');
-                    div.classList.add('professional');
-                    div.innerHTML = `
-                        <h3>${professional.name}</h3>
-                        <p>Service: ${professional.service}</p>
-                        <p>Country: ${professional.country}</p>
-                    `;
-                    directoryList.appendChild(div);
-                }
-            });
-        }
-
-        // Load directory when the page loads
-        window.onload = loadDirectory;
+        // Add any necessary JavaScript for functionality, like filtering or form submissions
     </script>
 </body>
 </html>
