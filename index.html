@@ -3,23 +3,66 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Portfolio</title>
+    <title>Connecting Argentina & New Zealand</title>
     <style>
-        body { font-family: Arial, sans-serif; text-align: center; padding: 20px; }
+        body { font-family: Arial, sans-serif; text-align: center; background-color: #f4f4f4; }
+        .container { max-width: 800px; margin: auto; padding: 20px; }
         h1 { color: #2c3e50; }
         p { color: #34495e; }
-        .container { max-width: 600px; margin: auto; }
-        .button { background-color: #3498db; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; }
-        .button:hover { background-color: #2980b9; }
+        .cta { background-color: #3498db; color: white; padding: 15px 25px; text-decoration: none; border-radius: 5px; display: inline-block; margin-top: 20px; }
+        .cta:hover { background-color: #2980b9; }
+        .directory { margin-top: 40px; }
+        .directory-item { margin-bottom: 20px; padding: 10px; background-color: #ecf0f1; border-radius: 5px; }
+        form input, form select { margin: 10px; padding: 10px; width: 100%; }
     </style>
 </head>
 <body>
-
     <div class="container">
-        <h1>Welcome to My Portfolio</h1>
-        <p>Hello! I'm a web developer passionate about building cool projects.</p>
-        <button class="button">Learn More</button>
+        <h1>Connecting Professionals Between Argentina & New Zealand</h1>
+        <p>Join our platform to offer your services or find the right professional for your needs.</p>
+        <a href="#signup" class="cta">Get Started</a>
+
+        <!-- Signup Form -->
+        <section id="signup">
+            <h2>Sign Up as a Professional</h2>
+            <form id="signup-form">
+                <input type="text" id="name" placeholder="Your Name" required>
+                <input type="text" id="service" placeholder="Service You Offer" required>
+                <select id="country" required>
+                    <option value="Argentina">Argentina</option>
+                    <option value="New Zealand">New Zealand</option>
+                </select>
+                <button type="submit" class="cta">Add to Directory</button>
+            </form>
+        </section>
+
+        <!-- Directory List -->
+        <section class="directory">
+            <h2>Our Professionals</h2>
+            <div id="directory-list"></div>
+        </section>
     </div>
 
+    <script>
+        const form = document.getElementById('signup-form');
+        const directoryList = document.getElementById('directory-list');
+
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const name = document.getElementById('name').value;
+            const service = document.getElementById('service').value;
+            const country = document.getElementById('country').value;
+
+            const directoryItem = document.createElement('div');
+            directoryItem.classList.add('directory-item');
+            directoryItem.innerHTML = `<strong>${name}</strong> - ${service} (${country})`;
+
+            directoryList.appendChild(directoryItem);
+
+            // Reset form after submission
+            form.reset();
+        });
+    </script>
 </body>
 </html>
