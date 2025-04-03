@@ -36,6 +36,18 @@
             </form>
         </section>
 
+        <!-- Search Matching System -->
+        <section id="search">
+            <h2>Find a Professional</h2>
+            <input type="text" id="search-service" placeholder="Search by Service">
+            <select id="search-country">
+                <option value="">All Countries</option>
+                <option value="Argentina">Argentina</option>
+                <option value="New Zealand">New Zealand</option>
+            </select>
+            <button onclick="searchProfessionals()" class="cta">Search</button>
+        </section>
+
         <!-- Directory List -->
         <section class="directory">
             <h2>Our Professionals</h2>
@@ -46,6 +58,9 @@
     <script>
         const form = document.getElementById('signup-form');
         const directoryList = document.getElementById('directory-list');
+        const searchService = document.getElementById('search-service');
+        const searchCountry = document.getElementById('search-country');
+        let professionals = [];
 
         form.addEventListener('submit', function(e) {
             e.preventDefault();
@@ -54,15 +69,34 @@
             const service = document.getElementById('service').value;
             const country = document.getElementById('country').value;
 
-            const directoryItem = document.createElement('div');
-            directoryItem.classList.add('directory-item');
-            directoryItem.innerHTML = `<strong>${name}</strong> - ${service} (${country})`;
+            const professional = { name, service, country };
+            professionals.push(professional);
+            displayProfessionals(professionals);
 
-            directoryList.appendChild(directoryItem);
-
-            // Reset form after submission
             form.reset();
         });
+
+        function displayProfessionals(list) {
+            directoryList.innerHTML = "";
+            list.forEach(prof => {
+                const directoryItem = document.createElement('div');
+                directoryItem.classList.add('directory-item');
+                directoryItem.innerHTML = `<strong>${prof.name}</strong> - ${prof.service} (${prof.country})`;
+                directoryList.appendChild(directoryItem);
+            });
+        }
+
+        function searchProfessionals() {
+            const searchText = searchService.value.toLowerCase();
+            const selectedCountry = searchCountry.value;
+
+            const filtered = professionals.filter(prof => 
+                prof.service.toLowerCase().includes(searchText) &&
+                (selectedCountry === "" || prof.country === selectedCountry)
+            );
+
+            displayProfessionals(filtered);
+        }
     </script>
 </body>
 </html>
