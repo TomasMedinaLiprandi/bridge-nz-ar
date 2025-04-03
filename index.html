@@ -12,6 +12,25 @@
             margin: 0;
             padding: 0;
         }
+        .header {
+            position: relative;
+            text-align: center;
+            color: white;
+        }
+        .header img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+        }
+        .header h1 {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.5);
+            padding: 10px 20px;
+            border-radius: 5px;
+        }
         .container { 
             max-width: 800px; 
             margin: auto; 
@@ -20,6 +39,15 @@
             border-radius: 10px; 
             box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
             margin-top: 20px;
+        }
+        .map-container {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 20px;
+        }
+        .map-container img {
+            width: 40%;
+            height: auto;
         }
         h1 { 
             color: #2c3e50; 
@@ -43,43 +71,23 @@
         .cta:hover { 
             background-color: #2980b9; 
         }
-        section {
-            margin-top: 30px;
-        }
-        form input, form select, form button {
-            margin: 10px;
-            padding: 10px;
-            width: calc(100% - 20px);
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            font-size: 16px;
-        }
-        form button {
-            background-color: #2ecc71;
-            color: white;
-            border: none;
-            cursor: pointer;
-        }
-        form button:hover {
-            background-color: #27ae60;
-        }
-        .directory {
-            margin-top: 40px;
-        }
-        .directory-item { 
-            margin-bottom: 20px; 
-            padding: 15px; 
-            background-color: #ecf0f1; 
-            border-radius: 5px; 
-            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
-        }
     </style>
 </head>
 <body>
-    <div class="container">
+    <div class="header">
+        <img src="bridge-image.jpg" alt="Bridge connecting Argentina & New Zealand">
         <h1>Connecting Professionals Between Argentina & New Zealand</h1>
+    </div>
+
+    <div class="container">
         <p>Join our platform to offer your services or find the right professional for your needs.</p>
         <a href="#signup" class="cta">Get Started</a>
+
+        <!-- Maps Section -->
+        <div class="map-container">
+            <img src="argentina-map.png" alt="Map of Argentina">
+            <img src="new-zealand-map.png" alt="Map of New Zealand">
+        </div>
 
         <!-- Signup Form -->
         <section id="signup">
@@ -94,68 +102,6 @@
                 <button type="submit">Add to Directory</button>
             </form>
         </section>
-
-        <!-- Search Matching System -->
-        <section id="search">
-            <h2>Find a Professional</h2>
-            <input type="text" id="search-service" placeholder="Search by Service">
-            <select id="search-country">
-                <option value="">All Countries</option>
-                <option value="Argentina">Argentina</option>
-                <option value="New Zealand">New Zealand</option>
-            </select>
-            <button onclick="searchProfessionals()">Search</button>
-        </section>
-
-        <!-- Directory List -->
-        <section class="directory">
-            <h2>Our Professionals</h2>
-            <div id="directory-list"></div>
-        </section>
     </div>
-
-    <script>
-        const form = document.getElementById('signup-form');
-        const directoryList = document.getElementById('directory-list');
-        const searchService = document.getElementById('search-service');
-        const searchCountry = document.getElementById('search-country');
-        let professionals = [];
-
-        form.addEventListener('submit', function(e) {
-            e.preventDefault();
-
-            const name = document.getElementById('name').value;
-            const service = document.getElementById('service').value;
-            const country = document.getElementById('country').value;
-
-            const professional = { name, service, country };
-            professionals.push(professional);
-            displayProfessionals(professionals);
-
-            form.reset();
-        });
-
-        function displayProfessionals(list) {
-            directoryList.innerHTML = "";
-            list.forEach(prof => {
-                const directoryItem = document.createElement('div');
-                directoryItem.classList.add('directory-item');
-                directoryItem.innerHTML = `<strong>${prof.name}</strong> - ${prof.service} (${prof.country})`;
-                directoryList.appendChild(directoryItem);
-            });
-        }
-
-        function searchProfessionals() {
-            const searchText = searchService.value.toLowerCase();
-            const selectedCountry = searchCountry.value;
-
-            const filtered = professionals.filter(prof => 
-                prof.service.toLowerCase().includes(searchText) &&
-                (selectedCountry === "" || prof.country === selectedCountry)
-            );
-
-            displayProfessionals(filtered);
-        }
-    </script>
 </body>
 </html>
